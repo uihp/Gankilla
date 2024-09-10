@@ -1,0 +1,7 @@
+#include "../hal_dreamCore.h"
+#include "main.h"
+
+bool HALDreamCore::_getKey(key::KEY_INDEX _keyIndex) {
+  if (_keyIndex == key::KEY_0) return !HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin);
+  if (_keyIndex == key::KEY_1) return !HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin);
+}

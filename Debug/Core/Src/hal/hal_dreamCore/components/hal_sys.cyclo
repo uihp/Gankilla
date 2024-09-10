@@ -1,0 +1,3 @@
+../Core/Src/hal/hal_dreamCore/components/hal_sys.cpp:4:6:virtual void HALDreamCore::_delay(long unsigned int)	1
+../Core/Src/hal/hal_dreamCore/components/hal_sys.cpp:8:15:virtual long unsigned int HALDreamCore::_millis()	1
+../Core/Src/hal/hal_dreamCore/components/hal_sys.cpp:12:15:virtual long unsigned int HALDreamCore::_getTick()	1

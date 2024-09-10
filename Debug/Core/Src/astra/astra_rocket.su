@@ -1,0 +1,9 @@
+D:\DevEnv\stm32cubeide\STM32CubeIDE_1.16.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.200.202406191623\tools\arm-none-eabi\include\c++\12.3.1\bits\basic_string.h:642:7:std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const _CharT*, const _Alloc&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]	24	static
+../Core/Src/astra/astra_rocket.cpp:64:6:void astraCoreInit()	144	static
+../Core/Src/astra/astra_rocket.cpp:87:6:void astraCoreStart()	8	static
+../Core/Src/astra/astra_rocket.cpp:94:6:void astraCoreDestroy()	8	static
+D:\DevEnv\stm32cubeide\STM32CubeIDE_1.16.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.200.202406191623\tools\arm-none-eabi\include\c++\12.3.1\bits\stl_vector.h:364:7:std::_Vector_base<_Tp, _Alloc>::~_Vector_base() [with _Tp = unsigned char; _Alloc = std::allocator<unsigned char>]	8	static
+D:\DevEnv\stm32cubeide\STM32CubeIDE_1.16.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.win32_1.0.200.202406191623\tools\arm-none-eabi\include\c++\12.3.1\bits\stl_vector.h:673:7:std::vector<_Tp, _Alloc>::vector(std::initializer_list<_Tp>, const allocator_type&) [with _Tp = unsigned char; _Alloc = std::allocator<unsigned char>]	32	static
+../Core/Src/astra/astra_rocket.cpp:97:1:void __static_initialization_and_destruction_0(int, int)	176	static
+../Core/Src/astra/astra_rocket.cpp:97:1:cpp)	0	static
+../Core/Src/astra/astra_rocket.cpp:97:1:cpp)	0	static

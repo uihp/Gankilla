@@ -1,0 +1,11 @@
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:59:15:unsigned char memPerused()	0	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:34:6:void myMemCpy(void*, void*, long unsigned int)	0	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:44:6:void myMemset(void*, unsigned char, long unsigned int)	0	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:50:6:void memInit()	8	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:72:15:long unsigned int memMalloc(long unsigned int)	16	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:100:15:unsigned char memFree(long unsigned int)	8	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:122:6:void myFree(void*)	0	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:132:7:void* myMalloc(long unsigned int)	8	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:143:7:void* myReAlloc(void*, long unsigned int)	24	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:155:7:void* operator new(std::size_t)	0	static
+../Core/Src/hal/hal_dreamCore/memory_pool.cpp:164:6:void operator delete(void*)	0	static
