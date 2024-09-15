@@ -1,7 +1,6 @@
-../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:217:25:virtual long unsigned int HAL::_getRandomSeed()	1
-../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:225:16:virtual void HAL::_beep(float)	1
-../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:229:16:virtual void HAL::_beepStop()	1
-../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:233:16:virtual void HAL::_setBeepVol(unsigned char)	1
+../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:229:16:virtual void HAL::_beep(float)	1
+../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:233:16:virtual void HAL::_beepStop()	1
+../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:237:16:virtual void HAL::_setBeepVol(unsigned char)	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:163:7:virtual void* HALDreamCore::_getCanvasBuffer()	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:167:15:virtual unsigned char HALDreamCore::_getBufferTileHeight()	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:171:15:virtual unsigned char HALDreamCore::_getBufferTileWidth()	1
@@ -30,7 +29,7 @@
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:9:6:void HALDreamCore::_ssd1306_transmit_cmd(unsigned char)	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:60:6:virtual void HALDreamCore::_screenOff()	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:54:6:virtual void HALDreamCore::_screenOn()	1
-../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:83:23:virtual std::string HAL::type()	1
+../Core/Src/hal/hal_dreamCore/components/oled/../../../hal.h:87:23:virtual std::string HAL::type()	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:9:6:void HALDreamCore::_ssd1306_transmit_cmd(unsigned char)	1
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:17:6:void HALDreamCore::_ssd1306_transmit_data(unsigned char, unsigned char)	2
 ../Core/Src/hal/hal_dreamCore/components/oled/hal_oled.cpp:26:6:void HALDreamCore::_ssd1306_reset(bool)	2

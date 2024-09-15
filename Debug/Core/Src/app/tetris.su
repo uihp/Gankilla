@@ -1,0 +1,10 @@
+../Core/Src/app/tetris.cpp:46:6:bool newb()	16	static
+../Core/Src/app/tetris.cpp:62:6:bool drop()	20	static
+../Core/Src/app/tetris.cpp:72:6:void fix()	8	static
+../Core/Src/app/tetris.cpp:79:6:void del()	20	static
+../Core/Src/app/tetris.cpp:91:6:void move(bool)	16	static
+../Core/Src/app/tetris.cpp:110:6:void change()	36	static
+../Core/Src/app/tetris.cpp:139:6:void TRoutine4Tetris()	16	static
+../Core/Src/app/tetris.cpp:179:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	0	static
+../Core/Src/app/tetris.cpp:187:6:void showField(unsigned char*)	56	static
+../Core/Src/app/tetris.cpp:199:5:int main4Tetris()	48	static

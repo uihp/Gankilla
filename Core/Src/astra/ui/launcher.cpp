@@ -2,8 +2,10 @@
 // Created by Fir on 2024/2/2.
 //
 
+#include <cstring>
 #include "launcher.h"
 #include "main.h"
+#include "../../app/tetris.h"
 
 namespace astra {
 
@@ -85,11 +87,14 @@ bool Launcher::open() {
 
   //如果当前页面指向的当前item没有后继 那就返回false
   if (currentMenu->getNextMenu() == nullptr) {
-    popInfo("unreferenced page!", 600);
+    popInfo("Unreferenced Page!", 600);
     return false;
   }
   if (currentMenu->getNextMenu()->getItemNum() == 0) {
-    popInfo("empty page!", 600);
+    if (currentMenu->getNextMenu()->title == "Tetris") {
+      HAL_GPIO_WritePin(StatusLED_GPIO_Port, StatusLED_Pin, GPIO_PIN_SET);
+      popInfo("Score: "+std::__cxx11::to_string(main4Tetris()), 600);
+    } else popInfo("Coming Soon", 600);
     return false;
   }
 
@@ -115,11 +120,11 @@ bool Launcher::open() {
  */
 bool Launcher::close() {
   if (currentMenu->getPreview() == nullptr) {
-    popInfo("unreferenced page!", 600);
+    // popInfo("Unreferenced Page!", 600);
     return false;
   }
   if (currentMenu->getPreview()->getItemNum() == 0) {
-    popInfo("empty page!", 600);
+    popInfo("Empty Page!", 600);
     return false;
   }
 
@@ -157,10 +162,7 @@ void Launcher::update() {
 //  if (time == 3200) selector->go(0);  //test
 //  if (time >= 3250) time = 0;  //test
 
-  if (time > 2) {
-    HAL::keyScan();
-    time = 0;
-  }
+  HAL::keyScan();
 
   if (*HAL::getKeyFlag() == key::KEY_PRESSED) {
     *HAL::getKeyFlag() = key::KEY_NOT_PRESSED;
@@ -168,9 +170,9 @@ void Launcher::update() {
       if (HAL::getKeyMap()[i] == key::CLICK) {
         if (i == 0) { selector->goPreview(); }//selector去到上一个项目
         else if (i == 1) { selector->goNext(); }//selector去到下一个项目
+        else if (i == 2) { open(); }//打开当前项目
       } else if (HAL::getKeyMap()[i] == key::PRESS) {
-        if (i == 0) { close(); }//退出当前项目
-        else if (i == 1) { open(); }//打开当前项目
+	if (i == 0) { close(); }//退出当前项目
       }
     }
     std::fill(HAL::getKeyMap(), HAL::getKeyMap() + key::KEY_NUM, key::INVALID);

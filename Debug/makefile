@@ -24,6 +24,7 @@ RM := rm -rf
 -include Core/Src/astra/ui/subdir.mk
 -include Core/Src/astra/app/subdir.mk
 -include Core/Src/astra/subdir.mk
+-include Core/Src/app/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -98,7 +99,7 @@ main-build: WithAstraUI.elf secondary-outputs
 
 # Tool invocations
 WithAstraUI.elf WithAstraUI.map: $(OBJS) $(USER_OBJS) E:\CODE\WS_WDG\STM32CubeIDE\WithAstraUI\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "WithAstraUI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\CODE\WS_WDG\STM32CubeIDE\WithAstraUI\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="WithAstraUI.map" -Wl,--gc-sections -static -fcommon --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+	arm-none-eabi-g++ -o "WithAstraUI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\CODE\WS_WDG\STM32CubeIDE\WithAstraUI\STM32F103C8TX_FLASH.ld" -Wl,-Map="WithAstraUI.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

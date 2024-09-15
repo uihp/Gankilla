@@ -36,7 +36,9 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+extern ADC_HandleTypeDef hadc1;
 extern SPI_HandleTypeDef hspi2;
+extern TIM_HandleTypeDef htim2;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -57,7 +59,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define StatusLED_Pin GPIO_PIN_1
+#define StatusLED_Pin GPIO_PIN_2
 #define StatusLED_GPIO_Port GPIOA
 #define KEY1_Pin GPIO_PIN_4
 #define KEY1_GPIO_Port GPIOA
@@ -65,16 +67,18 @@ void Error_Handler(void);
 #define KEY2_GPIO_Port GPIOA
 #define KEY3_Pin GPIO_PIN_0
 #define KEY3_GPIO_Port GPIOB
+#define KEY4_Pin GPIO_PIN_10
+#define KEY4_GPIO_Port GPIOB
 #define OLED_SCK_Pin GPIO_PIN_13
 #define OLED_SCK_GPIO_Port GPIOB
 #define OLED_MOSI_Pin GPIO_PIN_15
 #define OLED_MOSI_GPIO_Port GPIOB
-#define OLED_RST_Pin GPIO_PIN_9
-#define OLED_RST_GPIO_Port GPIOA
+#define OLED_CS_Pin GPIO_PIN_9
+#define OLED_CS_GPIO_Port GPIOA
 #define OLED_DC_Pin GPIO_PIN_10
 #define OLED_DC_GPIO_Port GPIOA
-#define OLED_CS_Pin GPIO_PIN_11
-#define OLED_CS_GPIO_Port GPIOA
+#define OLED_RST_Pin GPIO_PIN_11
+#define OLED_RST_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

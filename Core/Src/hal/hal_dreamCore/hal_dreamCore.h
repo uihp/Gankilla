@@ -69,6 +69,7 @@ public:
   void _delay(unsigned long _mill) override;
   unsigned long _millis() override;
   unsigned long _getTick() override;
+  unsigned long _getRandomSeed() override;
 
 public:
   bool _getKey(key::KEY_INDEX _keyIndex) override;

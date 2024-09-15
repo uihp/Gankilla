@@ -77,6 +77,8 @@ void HAL::_keyScan() {
       if (getAnyKey()) {
         if (getKey(key::KEY_0)) _keyFilter = key::KEY_0_CONFIRM;
         if (getKey(key::KEY_1)) _keyFilter = key::KEY_1_CONFIRM;
+        if (getKey(key::KEY_2)) _keyFilter = key::KEY_2_CONFIRM;
+        if (getKey(key::KEY_3)) _keyFilter = key::KEY_3_CONFIRM;
       }
       _timeCnt = 0;
       _lock = false;
@@ -84,6 +86,8 @@ void HAL::_keyScan() {
 
     case key::KEY_0_CONFIRM:
     case key::KEY_1_CONFIRM:
+    case key::KEY_2_CONFIRM:
+    case key::KEY_3_CONFIRM:
       //filter
       if (getAnyKey()) {
         if (!_lock) _lock = true;
@@ -110,17 +114,35 @@ void HAL::_keyScan() {
           if (_keyFilter == key::KEY_0_CONFIRM) {
             key[key::KEY_0] = key::CLICK;
             key[key::KEY_1] = key::INVALID;
+            key[key::KEY_2] = key::INVALID;
+            key[key::KEY_3] = key::INVALID;
           }
           if (_keyFilter == key::KEY_1_CONFIRM) {
+	    key[key::KEY_0] = key::INVALID;
             key[key::KEY_1] = key::CLICK;
-            key[key::KEY_0] = key::INVALID;
+            key[key::KEY_2] = key::INVALID;
+            key[key::KEY_3] = key::INVALID;
           }
+          if (_keyFilter == key::KEY_2_CONFIRM) {
+	    key[key::KEY_0] = key::INVALID;
+	    key[key::KEY_1] = key::INVALID;
+	    key[key::KEY_2] = key::CLICK;
+	    key[key::KEY_3] = key::INVALID;
+	  }
+          if (_keyFilter == key::KEY_3_CONFIRM) {
+	    key[key::KEY_0] = key::INVALID;
+	    key[key::KEY_1] = key::INVALID;
+	    key[key::KEY_2] = key::INVALID;
+	    key[key::KEY_3] = key::CLICK;
+	  }
           keyFlag = key::KEY_PRESSED;
           _keyFilter = key::RELEASED;
         } else {
           _keyFilter = key::CHECKING;
           key[key::KEY_0] = key::INVALID;
           key[key::KEY_1] = key::INVALID;
+          key[key::KEY_2] = key::INVALID;
+          key[key::KEY_3] = key::INVALID;
         }
       }
       break;
