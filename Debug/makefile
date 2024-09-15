@@ -72,34 +72,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := WithAstraUI
+BUILD_ARTIFACT_NAME := Gankilla
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-WithAstraUI.elf \
+Gankilla.elf \
 
 MAP_FILES += \
-WithAstraUI.map \
+Gankilla.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-WithAstraUI.list \
+Gankilla.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: WithAstraUI.elf secondary-outputs
+main-build: Gankilla.elf secondary-outputs
 
 # Tool invocations
-WithAstraUI.elf WithAstraUI.map: $(OBJS) $(USER_OBJS) E:\CODE\WS_WDG\STM32CubeIDE\WithAstraUI\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "WithAstraUI.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\CODE\WS_WDG\STM32CubeIDE\WithAstraUI\STM32F103C8TX_FLASH.ld" -Wl,-Map="WithAstraUI.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Gankilla.elf Gankilla.map: $(OBJS) $(USER_OBJS) E:\CODE\WS_WDG\STM32CubeIDE\Gankilla\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "Gankilla.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\CODE\WS_WDG\STM32CubeIDE\Gankilla\STM32F103C8TX_FLASH.ld" -Wl,-Map="Gankilla.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -108,14 +108,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-WithAstraUI.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "WithAstraUI.list"
+Gankilla.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Gankilla.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) WithAstraUI.elf WithAstraUI.list WithAstraUI.map default.size.stdout
+	-$(RM) Gankilla.elf Gankilla.list Gankilla.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
