@@ -267,8 +267,9 @@ void TRoutine4Tetris()
       else if (i == 3) change();
       else if (i == 1) while (drop()) {};
     } else if (HAL::getKeyMap()[i] == key::PRESS) {
-      if (i == 1) quickly = !quickly;
-      else if (i == 0) paused = !paused;
+      if (i == 0) paused = !paused;
+      else if (i == 1) quickly = !quickly;
+      else if (i == 3) playing = false;
     }
     }
     std::fill(HAL::getKeyMap(), HAL::getKeyMap() + key::KEY_NUM, key::INVALID);
@@ -301,6 +302,7 @@ int main4Tetris()
   int8_t i;
   uint8_t blockLine, flush[HEIGHT];
   score = 0;
+  playing = 1;
   srand(HAL::getRandomSeed());
   HAL_TIM_Base_Start_IT(&htim2);
   while (playing)
@@ -316,7 +318,6 @@ int main4Tetris()
   }
   HAL_TIM_Base_Stop_IT(&htim2);
   std::fill(screen, screen+HEIGHT, 0);
-  playing = 1;
   falling = 0;
   quickly = 0;
   paused = 0;

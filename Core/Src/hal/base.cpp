@@ -100,10 +100,26 @@ void HAL::_keyScan() {
           if (getKey(key::KEY_0)) {
             key[key::KEY_0] = key::PRESS;
             key[key::KEY_1] = key::INVALID;
+            key[key::KEY_2] = key::INVALID;
+            key[key::KEY_3] = key::INVALID;
           }
           if (getKey(key::KEY_1)) {
             key[key::KEY_1] = key::PRESS;
             key[key::KEY_0] = key::INVALID;
+            key[key::KEY_2] = key::INVALID;
+            key[key::KEY_3] = key::INVALID;
+          }
+          if (getKey(key::KEY_2)) {
+            key[key::KEY_2] = key::PRESS;
+            key[key::KEY_0] = key::INVALID;
+            key[key::KEY_1] = key::INVALID;
+            key[key::KEY_3] = key::INVALID;
+          }
+          if (getKey(key::KEY_3)) {
+            key[key::KEY_3] = key::PRESS;
+            key[key::KEY_0] = key::INVALID;
+            key[key::KEY_1] = key::INVALID;
+            key[key::KEY_2] = key::INVALID;
           }
           _timeCnt = 0;
           _lock = false;
@@ -118,23 +134,23 @@ void HAL::_keyScan() {
             key[key::KEY_3] = key::INVALID;
           }
           if (_keyFilter == key::KEY_1_CONFIRM) {
-	    key[key::KEY_0] = key::INVALID;
+            key[key::KEY_0] = key::INVALID;
             key[key::KEY_1] = key::CLICK;
             key[key::KEY_2] = key::INVALID;
             key[key::KEY_3] = key::INVALID;
           }
           if (_keyFilter == key::KEY_2_CONFIRM) {
-	    key[key::KEY_0] = key::INVALID;
-	    key[key::KEY_1] = key::INVALID;
-	    key[key::KEY_2] = key::CLICK;
-	    key[key::KEY_3] = key::INVALID;
-	  }
+            key[key::KEY_0] = key::INVALID;
+            key[key::KEY_1] = key::INVALID;
+            key[key::KEY_2] = key::CLICK;
+            key[key::KEY_3] = key::INVALID;
+          }
           if (_keyFilter == key::KEY_3_CONFIRM) {
-	    key[key::KEY_0] = key::INVALID;
-	    key[key::KEY_1] = key::INVALID;
-	    key[key::KEY_2] = key::INVALID;
-	    key[key::KEY_3] = key::CLICK;
-	  }
+            key[key::KEY_0] = key::INVALID;
+            key[key::KEY_1] = key::INVALID;
+            key[key::KEY_2] = key::INVALID;
+            key[key::KEY_3] = key::CLICK;
+          }
           keyFlag = key::KEY_PRESSED;
           _keyFilter = key::RELEASED;
         } else {
