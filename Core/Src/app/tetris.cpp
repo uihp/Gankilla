@@ -3,143 +3,8 @@
 #include "tetris.h"
 #include "../hal/base.h"
 
-#define HEIGHT 16
-#define BLOCK_HEIGHT 4
-#define BLOCK_KINDNUM 6
-
 int score;
 int8_t screen[HEIGHT];
-const uint8_t blocks[BLOCK_KINDNUM][4][BLOCK_HEIGHT] = {
-  0x10, 0x38, 0, 0, // T
-  /* 00010000
-   * 00111000
-   * 00000000
-   * 00000000
-   */
-  0x10, 0x18, 0x10, 0,
-  /* 00010000
-   * 00011000
-   * 00010000
-   * 00000000
-   */
-  0, 0x38, 0x10, 0,
-  /* 00000000
-   * 00111000
-   * 00010000
-   * 00000000
-   */
-  0x10, 0x30, 0x10, 0,
-  /* 00010000
-   * 00110000
-   * 00010000
-   * 00000000
-   */
-
-  0x08, 0x38, 0, 0, // L
-  /* 00001000
-   * 00111000
-   * 00000000
-   * 00000000
-   */
-  0x10, 0x10, 0x18, 0,
-  /* 00010000
-   * 00010000
-   * 00011000
-   * 00000000
-   */
-  0, 0x38, 0x20, 0,
-  /* 00000000
-   * 00111000
-   * 00100000
-   * 00000000
-   */
-  0x30, 0x10, 0x10, 0,
-  /* 00110000
-   * 00010000
-   * 00010000
-   * 00000000
-   */
-
-  0x20, 0x38, 0, 0, // J
-  /* 00100000
-   * 00111000
-   * 00000000
-   * 00000000
-   */
-  0x18, 0x10, 0x10, 0,
-  /* 00011000
-   * 00010000
-   * 00010000
-   * 00000000
-   */
-  0, 0x38, 0x08, 0,
-  /* 00000000
-   * 00111000
-   * 00001000
-   * 00000000
-   */
-  0x10, 0x10, 0x30, 0,
-  /* 00010000
-   * 00010000
-   * 00110000
-   * 00000000
-   */
-
-  0x30, 0x18, 0, 0, // Z
-  /* 00110000
-   * 00011000
-   * 00000000
-   * 00000000
-   */
-  0x08, 0x18, 0x10, 0,
-  /* 00001000
-   * 00011000
-   * 00010000
-   * 00000000
-   */
-  0, 0x30, 0x18, 0,
-  /* 00000000
-   * 00110000
-   * 00011000
-   * 00000000
-   */
-  0x10, 0x30, 0x20, 0,
-  /* 00010000
-   * 00110000
-   * 00100000
-   * 00000000
-   */
-
-  0x18, 0x30, 0, 0, // S
-  /* 00011000
-   * 00110000
-   * 00000000
-   * 00000000
-   */
-  0x10, 0x18, 0x08, 0,
-  /* 00010000
-   * 00011000
-   * 00001000
-   * 00000000
-   */
-  0, 0x18, 0x30, 0,
-  /* 00000000
-   * 00011000
-   * 00110000
-   * 00000000
-   */
-  0x20, 0x30, 0x10, 0,
-  /* 00100000
-   * 00110000
-   * 00010000
-   * 00000000
-   */
-
-  0, 0x3C, 0, 0, // I
-  0x08, 0x08, 0x08, 0x08,
-  0, 0x3C, 0, 0,
-  0x10, 0x10, 0x10, 0x10
-};
 uint8_t block[BLOCK_HEIGHT];
 int8_t dropdis, movedis, blktype, blkdire;
 
@@ -233,15 +98,16 @@ void change()
 
 bool playing = 1;
 bool falling = 0;
-bool quickly = 0;
+bool speedup = 0;
 bool paused = 0;
+bool hibernated = 0;
 
 void TRoutine4Tetris()
 {
   static int Count4Update = 0, Count4Btn = 0;
   Count4Update++;
   Count4Btn++;
-  if (!paused && Count4Update >= 150 - quickly*50)
+  if (!paused && Count4Update >= 150 - speedup*50)
   {
     Count4Update = 0;
     if (falling)
@@ -261,16 +127,16 @@ void TRoutine4Tetris()
   if (*HAL::getKeyFlag() == key::KEY_PRESSED) {
     *HAL::getKeyFlag() = key::KEY_NOT_PRESSED;
     for (unsigned char i = 0; i < key::KEY_NUM; i++) {
-    if (HAL::getKeyMap()[i] == key::CLICK) {
-      if (i == 2) move(0);
-      else if (i == 0) move(1);
-      else if (i == 3) change();
-      else if (i == 1) while (drop()) {};
-    } else if (HAL::getKeyMap()[i] == key::PRESS) {
-      if (i == 0) paused = !paused;
-      else if (i == 1) quickly = !quickly;
-      else if (i == 3) playing = false;
-    }
+      if (HAL::getKeyMap()[i] == key::CLICK) {
+        if (i == 2) move(0);
+        else if (i == 0) move(1);
+        else if (i == 3) change();
+        else if (i == 1) while (drop()) {};
+      } else if (HAL::getKeyMap()[i] == key::PRESS) {
+        if (i == 0) hibernated = 1;
+        else if (i == 1) speedup = !speedup;
+        else if (i == 2) paused = !paused;
+      }
     }
     std::fill(HAL::getKeyMap(), HAL::getKeyMap() + key::KEY_NUM, key::INVALID);
     *HAL::getKeyFlag() = key::KEY_NOT_PRESSED;
@@ -293,7 +159,7 @@ void showField(unsigned char *dat)
     char row = *(dat + i);
     for (j = 0; j < 8; j++)
       if (row & 0x01 << j)
-	  HAL::drawBox(i*8+1, j*8-1, 7, 7);
+	  HAL::drawBox(i*8+1, j*8+1, 6, 6);
   }
 }
 
@@ -301,11 +167,19 @@ int main4Tetris()
 {
   int8_t i;
   uint8_t blockLine, flush[HEIGHT];
-  score = 0;
-  playing = 1;
   srand(HAL::getRandomSeed());
   HAL_TIM_Base_Start_IT(&htim2);
-  while (playing)
+  if (!hibernated) {
+    std::fill(screen, screen+HEIGHT, 0);
+    std::fill(block, block+BLOCK_HEIGHT, 0);
+    score = 0;
+    playing = 1;
+    falling = 0;
+    speedup = 0;
+    paused = 0;
+  }
+  hibernated = 0;
+  while (playing && !hibernated)
   {
     for (i = 0; i < HEIGHT; i++)
     {
@@ -317,9 +191,5 @@ int main4Tetris()
     HAL::canvasUpdate();
   }
   HAL_TIM_Base_Stop_IT(&htim2);
-  std::fill(screen, screen+HEIGHT, 0);
-  falling = 0;
-  quickly = 0;
-  paused = 0;
   return score;
 }
