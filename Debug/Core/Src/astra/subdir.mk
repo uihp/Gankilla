@@ -5,16 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Core/Src/astra/astra_logo.cpp \
-../Core/Src/astra/astra_rocket.cpp 
+../Core/Src/astra/launcher.cpp 
 
 OBJS += \
-./Core/Src/astra/astra_logo.o \
-./Core/Src/astra/astra_rocket.o 
+./Core/Src/astra/launcher.o 
 
 CPP_DEPS += \
-./Core/Src/astra/astra_logo.d \
-./Core/Src/astra/astra_rocket.d 
+./Core/Src/astra/launcher.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -24,7 +21,7 @@ Core/Src/astra/%.o Core/Src/astra/%.su Core/Src/astra/%.cyclo: ../Core/Src/astra
 clean: clean-Core-2f-Src-2f-astra
 
 clean-Core-2f-Src-2f-astra:
-	-$(RM) ./Core/Src/astra/astra_logo.cyclo ./Core/Src/astra/astra_logo.d ./Core/Src/astra/astra_logo.o ./Core/Src/astra/astra_logo.su ./Core/Src/astra/astra_rocket.cyclo ./Core/Src/astra/astra_rocket.d ./Core/Src/astra/astra_rocket.o ./Core/Src/astra/astra_rocket.su
+	-$(RM) ./Core/Src/astra/launcher.cyclo ./Core/Src/astra/launcher.d ./Core/Src/astra/launcher.o ./Core/Src/astra/launcher.su
 
 .PHONY: clean-Core-2f-Src-2f-astra
 

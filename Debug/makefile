@@ -11,18 +11,10 @@ RM := rm -rf
 -include sources.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
--include Core/Src/hal/hal_dreamCore/components/oled/graph_lib/u8g2/subdir.mk
--include Core/Src/hal/hal_dreamCore/components/oled/subdir.mk
--include Core/Src/hal/hal_dreamCore/components/subdir.mk
--include Core/Src/hal/hal_dreamCore/subdir.mk
+-include Core/Src/lib/u8g2/subdir.mk
 -include Core/Src/hal/subdir.mk
--include Core/Src/astra/ui/item/widget/subdir.mk
--include Core/Src/astra/ui/item/selector/subdir.mk
--include Core/Src/astra/ui/item/plugin/subdir.mk
--include Core/Src/astra/ui/item/menu/subdir.mk
--include Core/Src/astra/ui/item/camera/subdir.mk
--include Core/Src/astra/ui/subdir.mk
--include Core/Src/astra/app/subdir.mk
+-include Core/Src/astra/items/subdir.mk
+-include Core/Src/astra/demo/subdir.mk
 -include Core/Src/astra/subdir.mk
 -include Core/Src/app/subdir.mk
 -include Core/Src/subdir.mk
@@ -98,8 +90,8 @@ all: main-build
 main-build: Gankilla.elf secondary-outputs
 
 # Tool invocations
-Gankilla.elf Gankilla.map: $(OBJS) $(USER_OBJS) E:\CODE\WS_WDG\STM32CubeIDE\Gankilla\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "Gankilla.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\CODE\WS_WDG\STM32CubeIDE\Gankilla\STM32F103C8TX_FLASH.ld" -Wl,-Map="Gankilla.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Gankilla.elf Gankilla.map: $(OBJS) $(USER_OBJS) E:\CODE\WS_TPM\Gankilla\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "Gankilla.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\CODE\WS_TPM\Gankilla\STM32F103C8TX_FLASH.ld" -Wl,-Map="Gankilla.map" -Wl,--gc-sections -static --specs=nosys.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

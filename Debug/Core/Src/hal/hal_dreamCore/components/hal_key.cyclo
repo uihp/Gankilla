@@ -1,1 +1,0 @@
-../Core/Src/hal/hal_dreamCore/components/hal_key.cpp:4:6:virtual bool HALDreamCore::_getKey(key::KEY_INDEX)	4

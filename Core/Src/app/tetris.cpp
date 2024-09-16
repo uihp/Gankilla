@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "main.h"
 #include "tetris.h"
-#include "../hal/hal_dreamCore/hal_dreamCore.h"
+#include "../hal/base.h"
 
 #define HEIGHT 16
 #define BLOCK_HEIGHT 4

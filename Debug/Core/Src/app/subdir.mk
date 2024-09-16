@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Core/Src/app/astra.cpp \
 ../Core/Src/app/tetris.cpp 
 
 OBJS += \
+./Core/Src/app/astra.o \
 ./Core/Src/app/tetris.o 
 
 CPP_DEPS += \
+./Core/Src/app/astra.d \
 ./Core/Src/app/tetris.d 
 
 
@@ -21,7 +24,7 @@ Core/Src/app/%.o Core/Src/app/%.su Core/Src/app/%.cyclo: ../Core/Src/app/%.cpp C
 clean: clean-Core-2f-Src-2f-app
 
 clean-Core-2f-Src-2f-app:
-	-$(RM) ./Core/Src/app/tetris.cyclo ./Core/Src/app/tetris.d ./Core/Src/app/tetris.o ./Core/Src/app/tetris.su
+	-$(RM) ./Core/Src/app/astra.cyclo ./Core/Src/app/astra.d ./Core/Src/app/astra.o ./Core/Src/app/astra.su ./Core/Src/app/tetris.cyclo ./Core/Src/app/tetris.d ./Core/Src/app/tetris.o ./Core/Src/app/tetris.su
 
 .PHONY: clean-Core-2f-Src-2f-app
 

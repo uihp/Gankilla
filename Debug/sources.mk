@@ -39,19 +39,11 @@ CPP_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 Core/Src/app \
-Core/Src/astra/app \
+Core/Src/astra/demo \
+Core/Src/astra/items \
 Core/Src/astra \
-Core/Src/astra/ui/item/camera \
-Core/Src/astra/ui/item/menu \
-Core/Src/astra/ui/item/plugin \
-Core/Src/astra/ui/item/selector \
-Core/Src/astra/ui/item/widget \
-Core/Src/astra/ui \
 Core/Src/hal \
-Core/Src/hal/hal_dreamCore/components \
-Core/Src/hal/hal_dreamCore/components/oled/graph_lib/u8g2 \
-Core/Src/hal/hal_dreamCore/components/oled \
-Core/Src/hal/hal_dreamCore \
+Core/Src/lib/u8g2 \
 Core/Src \
 Core/Startup \
 Drivers/STM32F1xx_HAL_Driver/Src \

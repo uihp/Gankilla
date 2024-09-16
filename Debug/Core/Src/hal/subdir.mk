@@ -5,13 +5,22 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Core/Src/hal/hal.cpp 
+../Core/Src/hal/base.cpp \
+../Core/Src/hal/key.cpp \
+../Core/Src/hal/oled.cpp \
+../Core/Src/hal/system.cpp 
 
 OBJS += \
-./Core/Src/hal/hal.o 
+./Core/Src/hal/base.o \
+./Core/Src/hal/key.o \
+./Core/Src/hal/oled.o \
+./Core/Src/hal/system.o 
 
 CPP_DEPS += \
-./Core/Src/hal/hal.d 
+./Core/Src/hal/base.d \
+./Core/Src/hal/key.d \
+./Core/Src/hal/oled.d \
+./Core/Src/hal/system.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +30,7 @@ Core/Src/hal/%.o Core/Src/hal/%.su Core/Src/hal/%.cyclo: ../Core/Src/hal/%.cpp C
 clean: clean-Core-2f-Src-2f-hal
 
 clean-Core-2f-Src-2f-hal:
-	-$(RM) ./Core/Src/hal/hal.cyclo ./Core/Src/hal/hal.d ./Core/Src/hal/hal.o ./Core/Src/hal/hal.su
+	-$(RM) ./Core/Src/hal/base.cyclo ./Core/Src/hal/base.d ./Core/Src/hal/base.o ./Core/Src/hal/base.su ./Core/Src/hal/key.cyclo ./Core/Src/hal/key.d ./Core/Src/hal/key.o ./Core/Src/hal/key.su ./Core/Src/hal/oled.cyclo ./Core/Src/hal/oled.d ./Core/Src/hal/oled.o ./Core/Src/hal/oled.su ./Core/Src/hal/system.cyclo ./Core/Src/hal/system.d ./Core/Src/hal/system.o ./Core/Src/hal/system.su
 
 .PHONY: clean-Core-2f-Src-2f-hal
 

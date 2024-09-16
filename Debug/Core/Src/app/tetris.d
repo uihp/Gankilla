@@ -26,13 +26,10 @@ Core/Src/app/tetris.o: ../Core/Src/app/tetris.cpp ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
- ../Core/Src/app/tetris.h \
- ../Core/Src/app/../hal/hal_dreamCore/hal_dreamCore.h \
- ../Core/Src/app/../hal/hal_dreamCore/../hal.h \
- ../Core/Src/app/../hal/hal_dreamCore/../../astra/config/config.h \
- ../Core/Src/app/../hal/hal_dreamCore/../../astra/config/../../hal/hal_dreamCore/components/oled/graph_lib/u8g2/u8g2.h \
- ../Core/Src/app/../hal/hal_dreamCore/../../astra/config/../../hal/hal_dreamCore/components/oled/graph_lib/u8g2/u8x8.h \
- ../Core/Src/app/../hal/hal_dreamCore/components/oled/graph_lib/u8g2/u8g2.h
+ ../Core/Src/app/tetris.h ../Core/Src/app/../hal/base.h \
+ ../Core/Src/app/../hal/../astra/config.h \
+ ../Core/Src/app/../hal/../astra/../lib/u8g2/u8g2.h \
+ ../Core/Src/app/../hal/../astra/../lib/u8g2/u8x8.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -62,9 +59,7 @@ Core/Src/app/tetris.o: ../Core/Src/app/tetris.cpp ../Core/Inc/main.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 ../Core/Src/app/tetris.h:
-../Core/Src/app/../hal/hal_dreamCore/hal_dreamCore.h:
-../Core/Src/app/../hal/hal_dreamCore/../hal.h:
-../Core/Src/app/../hal/hal_dreamCore/../../astra/config/config.h:
-../Core/Src/app/../hal/hal_dreamCore/../../astra/config/../../hal/hal_dreamCore/components/oled/graph_lib/u8g2/u8g2.h:
-../Core/Src/app/../hal/hal_dreamCore/../../astra/config/../../hal/hal_dreamCore/components/oled/graph_lib/u8g2/u8x8.h:
-../Core/Src/app/../hal/hal_dreamCore/components/oled/graph_lib/u8g2/u8g2.h:
+../Core/Src/app/../hal/base.h:
+../Core/Src/app/../hal/../astra/config.h:
+../Core/Src/app/../hal/../astra/../lib/u8g2/u8g2.h:
+../Core/Src/app/../hal/../astra/../lib/u8g2/u8x8.h:
