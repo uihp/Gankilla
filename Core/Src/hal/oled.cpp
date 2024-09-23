@@ -1,6 +1,3 @@
-//
-// Created by Fir on 2024/2/11.
-//
 #include <cmath>
 #include "main.h"
 #include "components.h"
@@ -44,23 +41,16 @@ void MixinHAL::_ssd1306_fill(unsigned char _data) {
   }
 }
 
-/**
- * @brief transmit token to OLED.
- *
- * @param _data data to transmit.
- * @param _cmd command, if 1, transmit command, else transmit data.
- */
-
 void MixinHAL::_screenOn() {
-  _ssd1306_transmit_cmd(0X8D);  //set dc-dc command.
-  _ssd1306_transmit_cmd(0X14);  //dc-dc enable.
-  _ssd1306_transmit_cmd(0XAF);  //display on.
+  _ssd1306_transmit_cmd(0X8D); // DC-DC Command
+  _ssd1306_transmit_cmd(0X14); // DC-DC Enable
+  _ssd1306_transmit_cmd(0XAF); // Display On
 }
 
 void MixinHAL::_screenOff() {
-  _ssd1306_transmit_cmd(0X8D);  //set dc-dc command.
-  _ssd1306_transmit_cmd(0X10);  //dc-dc disable.
-  _ssd1306_transmit_cmd(0XAE);  //display off.
+  _ssd1306_transmit_cmd(0X8D); // DC-DC Command
+  _ssd1306_transmit_cmd(0X10); // DC-DC Disable
+  _ssd1306_transmit_cmd(0XAE); // Display Off
 }
 
 void MixinHAL::_ssd1306_init() {
@@ -93,48 +83,43 @@ void MixinHAL::_ssd1306_init() {
   _ssd1306_transmit_cmd(0x8D);
   _ssd1306_transmit_cmd(0x14);
   _ssd1306_transmit_cmd(0xAF);
-
-  //_ssd1306_fill(0x00);
 }
 
 unsigned char MixinHAL::_u8x8_byte_hw_spi_callback(u8x8_t *_u8x8, unsigned char _msg, unsigned char _argInt, void *_argPtr) { //NOLINT
   switch (_msg) {
-    case U8X8_MSG_BYTE_SEND: /*通过SPI发送arg_int个字节数据*/
-      HAL_SPI_Transmit_DMA(&hspi2, (unsigned char *) _argPtr, _argInt);
-      while (hspi2.TxXferCount);//DMA
+    case U8X8_MSG_BYTE_INIT:
       break;
-    case U8X8_MSG_BYTE_INIT: /*初始化函数*/
-      break;
-    case U8X8_MSG_BYTE_SET_DC: /*设置DC引脚,表明发送的是数据还是命令*/
+    case U8X8_MSG_BYTE_SET_DC: // 设置 DC 引脚，表明发送的是数据还是命令
       HAL_GPIO_WritePin(OLED_DC_GPIO_Port, OLED_DC_Pin, static_cast<GPIO_PinState>(_argInt));
+      break;
+    case U8X8_MSG_BYTE_SEND: // 通过 SPI 发送 _argInt 个字节数据
+      HAL_SPI_Transmit_DMA(&hspi2, (unsigned char *) _argPtr, _argInt);
+      while (hspi2.TxXferCount); // DMA
       break;
     case U8X8_MSG_BYTE_START_TRANSFER:
       u8x8_gpio_SetCS(_u8x8, _u8x8->display_info->chip_enable_level);
       _u8x8->gpio_and_delay_cb(_u8x8, U8X8_MSG_DELAY_NANO, _u8x8->display_info->post_chip_enable_wait_ns, nullptr);
       break;
     case U8X8_MSG_BYTE_END_TRANSFER:
-      _u8x8->gpio_and_delay_cb(_u8x8,
-                               U8X8_MSG_DELAY_NANO,
-                               _u8x8->display_info->pre_chip_disable_wait_ns,
-                               nullptr);
+      _u8x8->gpio_and_delay_cb(_u8x8, U8X8_MSG_DELAY_NANO, _u8x8->display_info->pre_chip_disable_wait_ns, nullptr);
       u8x8_gpio_SetCS(_u8x8, _u8x8->display_info->chip_disable_level);
       break;
-    default:return 0;
+    default: return 0;
   }
   return 1;
 }
 
 unsigned char MixinHAL::_u8x8_gpio_and_delay_callback(__attribute__((unused)) u8x8_t *_u8x8,
-                                                    __attribute__((unused)) unsigned char _msg,
-                                                    __attribute__((unused)) unsigned char _argInt,
-                                                    __attribute__((unused)) void *_argPtr) { //NOLINT
+  __attribute__((unused)) unsigned char _msg,
+  __attribute__((unused)) unsigned char _argInt,
+  __attribute__((unused)) void *_argPtr) { //NOLINT
   switch (_msg) {
-    case U8X8_MSG_GPIO_AND_DELAY_INIT: /*delay和GPIO的初始化，在main中已经初始化完成了*/
+    case U8X8_MSG_GPIO_AND_DELAY_INIT: // GPIO 和 Delay 的初始化，在 MX 生成代码中已经初始化完成，直接 break
       break;
-    case U8X8_MSG_DELAY_MILLI: /*延时函数*/
+    case U8X8_MSG_DELAY_MILLI: // 延时函数
       HAL_Delay(_argInt);
       break;
-    case U8X8_MSG_GPIO_CS: /*片选信号*/
+    case U8X8_MSG_GPIO_CS: // 片选信号
       HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, static_cast<GPIO_PinState>(_argInt));
       break;
     case U8X8_MSG_GPIO_DC:
@@ -145,109 +130,47 @@ unsigned char MixinHAL::_u8x8_gpio_and_delay_callback(__attribute__((unused)) u8
 }
 
 void MixinHAL::_u8g2_init() {
-  u8g2_Setup_ssd1306_128x64_noname_f(&canvasBuffer,
-                                     U8G2_R0,
-                                     _u8x8_byte_hw_spi_callback,
-                                     _u8x8_gpio_and_delay_callback);  // 初始化 u8g2 结构体
+  u8g2_Setup_ssd1306_128x64_noname_f(&canvasBuffer, U8G2_R0, _u8x8_byte_hw_spi_callback, _u8x8_gpio_and_delay_callback);
   u8g2_InitDisplay(&canvasBuffer); // 根据所选的芯片进行初始化工作，初始化完成后，显示器处于关闭状态
   u8g2_SetPowerSave(&canvasBuffer, 0); // 打开显示器
   u8g2_ClearBuffer(&canvasBuffer);
-
-  //delay(100);
-
-  u8g2_SetFontMode(&canvasBuffer, 1); /*字体模式选择*/
-  u8g2_SetFontDirection(&canvasBuffer, 0); /*字体方向选择*/
-  u8g2_SetFont(&canvasBuffer, u8g2_font_myfont); /*字库选择*/
+  u8g2_SetFontMode(&canvasBuffer, 1);
+  u8g2_SetFontDirection(&canvasBuffer, 0);
+  u8g2_SetFont(&canvasBuffer, u8g2_font_myfont);
 }
 
-void *MixinHAL::_getCanvasBuffer() {
-  return u8g2_GetBufferPtr(&canvasBuffer);
-}
-
-unsigned char MixinHAL::_getBufferTileHeight() {
-  return u8g2_GetBufferTileHeight(&canvasBuffer);
-}
-
-unsigned char MixinHAL::_getBufferTileWidth() {
-  return u8g2_GetBufferTileWidth(&canvasBuffer);
-}
-
-void MixinHAL::_canvasUpdate() {
-  u8g2_SendBuffer(&canvasBuffer);
-}
-
-void MixinHAL::_canvasClear() {
-  u8g2_ClearBuffer(&canvasBuffer);
-}
-
+void *MixinHAL::_getCanvasBuffer() { return u8g2_GetBufferPtr(&canvasBuffer); }
+unsigned char MixinHAL::_getBufferTileHeight() { return u8g2_GetBufferTileHeight(&canvasBuffer); }
+unsigned char MixinHAL::_getBufferTileWidth() { return u8g2_GetBufferTileWidth(&canvasBuffer); }
+void MixinHAL::_canvasUpdate() { u8g2_SendBuffer(&canvasBuffer); }
+void MixinHAL::_canvasClear() { u8g2_ClearBuffer(&canvasBuffer); }
 void MixinHAL::_setFont(const unsigned char *_font) {
-  u8g2_SetFontMode(&canvasBuffer, 1); /*字体模式选择*/
-  u8g2_SetFontDirection(&canvasBuffer, 0); /*字体方向选择*/
+  u8g2_SetFontMode(&canvasBuffer, 1);
+  u8g2_SetFontDirection(&canvasBuffer, 0);
   u8g2_SetFont(&canvasBuffer, _font);
 }
-
-unsigned char MixinHAL::_getFontWidth(std::string &_text) {
-  return u8g2_GetUTF8Width(&canvasBuffer, _text.c_str());
-}
-
-unsigned char MixinHAL::_getFontHeight() {
-  return u8g2_GetMaxCharHeight(&canvasBuffer);
-}
-
-void MixinHAL::_setDrawType(unsigned char _type) {
-  u8g2_SetDrawColor(&canvasBuffer, _type);
-}
-
-void MixinHAL::_drawPixel(float _x, float _y) {
-  u8g2_DrawPixel(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y));
-}
-
-void MixinHAL::_drawEnglish(float _x, float _y, const std::string &_text) {
-  u8g2_DrawStr(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), _text.c_str());
-}
-
-void MixinHAL::_drawChinese(float _x, float _y, const std::string &_text) {
-  u8g2_DrawUTF8(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), _text.c_str());
-}
-
+unsigned char MixinHAL::_getFontWidth(std::string &_text) { return u8g2_GetUTF8Width(&canvasBuffer, _text.c_str()); }
+unsigned char MixinHAL::_getFontHeight() { return u8g2_GetMaxCharHeight(&canvasBuffer); }
+void MixinHAL::_setDrawType(unsigned char _type) { u8g2_SetDrawColor(&canvasBuffer, _type); }
+void MixinHAL::_drawPixel(float _x, float _y) { u8g2_DrawPixel(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y)); }
+void MixinHAL::_drawASCII(float _x, float _y, const std::string &_text) { u8g2_DrawStr(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), _text.c_str()); }
+void MixinHAL::_drawUTF8(float _x, float _y, const std::string &_text) { u8g2_DrawUTF8(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), _text.c_str()); }
+void MixinHAL::_drawVLine(float _x, float _y, float _h) { u8g2_DrawVLine(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_h)); }
+void MixinHAL::_drawHLine(float _x, float _y, float _l) { u8g2_DrawHLine(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_l)); }
+void MixinHAL::_drawBMP(float _x, float _y, float _w, float _h, const unsigned char *_bitMap) { u8g2_DrawXBMP(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_w), (int16_t) std::round(_h), _bitMap); }
+void MixinHAL::_drawBox(float _x, float _y, float _w, float _h) { u8g2_DrawBox(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_w), (int16_t) std::round(_h)); }
+void MixinHAL::_drawRBox(float _x, float _y, float _w, float _h, float _r) { u8g2_DrawRBox(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_w), (int16_t) std::round(_h), (int16_t) std::round(_r)); }
+void MixinHAL::_drawFrame(float _x, float _y, float _w, float _h) { u8g2_DrawFrame(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_w), (int16_t) std::round(_h)); }
+void MixinHAL::_drawRFrame(float _x, float _y, float _w, float _h, float _r) { u8g2_DrawRFrame(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y), (int16_t) std::round(_w), (int16_t) std::round(_h), (int16_t) std::round(_r)); }
 void MixinHAL::_drawVDottedLine(float _x, float _y, float _h) {
   for (unsigned char i = 0; i < (unsigned char)std::round(_h); i++) {
     if (i % 8 == 0 | (i - 1) % 8 == 0 | (i - 2) % 8 == 0) continue;
-    u8g2_DrawPixel(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y) + i);
+    u8g2_DrawPixel(&canvasBuffer, (int16_t) std::round(_x), (int16_t) std::round(_y) + i);
   }
 }
-
 void MixinHAL::_drawHDottedLine(float _x, float _y, float _l) {
   for (unsigned char i = 0; i < _l; i++) {
     if (i % 8 == 0 | (i - 1) % 8 == 0 | (i - 2) % 8 == 0) continue;
-    u8g2_DrawPixel(&canvasBuffer, (int16_t)std::round(_x) + i, (int16_t)std::round(_y));
+    u8g2_DrawPixel(&canvasBuffer, (int16_t) std::round(_x) + i, (int16_t) std::round(_y));
   }
-}
-
-void MixinHAL::_drawVLine(float _x, float _y, float _h) {
-  u8g2_DrawVLine(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_h));
-}
-
-void MixinHAL::_drawHLine(float _x, float _y, float _l) {
-  u8g2_DrawHLine(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_l));
-}
-
-void MixinHAL::_drawBMP(float _x, float _y, float _w, float _h, const unsigned char *_bitMap) {
-  u8g2_DrawXBMP(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_w), (int16_t)std::round(_h), _bitMap);
-}
-
-void MixinHAL::_drawBox(float _x, float _y, float _w, float _h) {
-  u8g2_DrawBox(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_w), (int16_t)std::round(_h));
-}
-
-void MixinHAL::_drawRBox(float _x, float _y, float _w, float _h, float _r) {
-  u8g2_DrawRBox(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_w), (int16_t)std::round(_h), (int16_t)std::round(_r));
-}
-
-void MixinHAL::_drawFrame(float _x, float _y, float _w, float _h) {
-  u8g2_DrawFrame(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_w), (int16_t)std::round(_h));
-}
-
-void MixinHAL::_drawRFrame(float _x, float _y, float _w, float _h, float _r) {
-  u8g2_DrawRFrame(&canvasBuffer, (int16_t)std::round(_x), (int16_t)std::round(_y), (int16_t)std::round(_w), (int16_t)std::round(_h), (int16_t)std::round(_r));
 }

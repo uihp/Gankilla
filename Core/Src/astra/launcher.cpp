@@ -34,7 +34,7 @@ void Launcher::notice(std::string _info, uint16_t _time) {
     HAL::drawRBox(xPop - 4, yPop - 4, wPop + 8, hPop + 8, getUIConfig().popRadius + 2);
     HAL::setDrawType(1);  //反色显示
     HAL::drawRFrame(xPop - 1, yPop - 1, wPop + 2, hPop + 2, getUIConfig().popRadius);  //绘制一个圆角矩形
-    HAL::drawEnglish(xPop + getUIConfig().popMargin,
+    HAL::drawASCII(xPop + getUIConfig().popMargin,
 		   yPop + getUIConfig().popMargin + HAL::getFontHeight(),
 		   _info);  //绘制文字
 

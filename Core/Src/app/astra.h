@@ -4,8 +4,8 @@
 // this file is used to guide STM32 into astra UI based on C++
 //
 
-#ifndef ASTRA_CORE_SRC_ASTRA_ASTRA_ROCKET_H_
-#define ASTRA_CORE_SRC_ASTRA_ASTRA_ROCKET_H_
+#ifndef APP_ASTRA__H_
+#define APP_ASTRA__H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,4 +29,4 @@ void astraCoreDestroy(void);
 /*---- Cpp ----*/
 
 #endif
-#endif //ASTRA_CORE_SRC_ASTRA_ASTRA_ROCKET_H_
+#endif // APP_ASTRA__H_

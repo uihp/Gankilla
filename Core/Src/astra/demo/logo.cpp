@@ -30,14 +30,13 @@ void drawLogo(uint16_t _time) {
     static std::vector<float> yStarsTrg;
     static std::vector<float> xStars;
 
-    static std::string text = "astra UI";
-    static std::string copyRight = "powered by";
-
-    HAL::setFont(getUIConfig().logoTitleFont);
+    static std::string text = "Gankilla";
+    static std::string copyRight = "powered by astraUI";
+    HAL::setFont(astra::getUIConfig().logoTitleFont);
     static float xTitle = (HAL::getSystemConfig().screenWeight - HAL::getFontWidth(text)) / 2;
-    HAL::setFont(getUIConfig().logoCopyRightFont);
+    HAL::setFont(astra::getUIConfig().logoCopyRightFont);
     static float xCopyRight = (HAL::getSystemConfig().screenWeight - HAL::getFontWidth(copyRight)) / 2;
-    HAL::setFont(getUIConfig().mainFont);
+    HAL::setFont(astra::getUIConfig().mainFont);
 
     //都是左上角坐标
     static float yTitle = 0 - getUIConfig().logoTextHeight - 1;
@@ -103,9 +102,9 @@ void drawLogo(uint16_t _time) {
     }
 
     HAL::setFont(getUIConfig().logoTitleFont);
-    HAL::drawEnglish(xTitle, yTitle + getUIConfig().logoTextHeight, text);
+    HAL::drawASCII(xTitle, yTitle + getUIConfig().logoTextHeight, text);
     HAL::setFont(getUIConfig().logoCopyRightFont);
-    HAL::drawEnglish(xCopyRight, yCopyRight + getUIConfig().logoCopyRightHeight, copyRight);
+    HAL::drawASCII(xCopyRight, yCopyRight + getUIConfig().logoCopyRightHeight, copyRight);
     animation(yTitle, yTitleTrg, getUIConfig().logoAnimationSpeed);
     animation(yCopyRight, yCopyRightTrg, getUIConfig().logoAnimationSpeed);
 

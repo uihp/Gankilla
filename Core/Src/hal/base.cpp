@@ -1,7 +1,3 @@
-//
-// Created by Fir on 2024/2/8.
-//
-
 #include <cstring>
 #include "base.h"
 
@@ -49,7 +45,7 @@ void HAL::_printInfo(std::string _msg) {
   canvasClear();
   setDrawType(2); //反色显示
   for (unsigned char i = 0; i < _infoCache.size(); i++) {
-    drawEnglish(0, _fontHeight + i * (1 + _fontHeight), _infoCache[i]);
+    drawASCII(0, _fontHeight + i * (1 + _fontHeight), _infoCache[i]);
   }
   canvasUpdate();
   setDrawType(1); //回归实色显示

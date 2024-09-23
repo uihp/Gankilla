@@ -1,11 +1,5 @@
-//
-// Created by Fir on 2024/3/7 007.
-// 此文件的作用是引导STM32进入astra UI 基于C++
-// this file is used to guide STM32 into astra UI based on C++
-//
-
-#ifndef TETRIS_H_
-#define TETRIS_H_
+#ifndef APP_TETRIS_H_
+#define APP_TETRIS_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,6 +12,7 @@ extern "C" {
 #define BLOCK_KINDNUM 6
 
 int main4Tetris(void);
+void TRoutine4Tetris();
 const uint8_t blocks[BLOCK_KINDNUM][4][BLOCK_HEIGHT] = {
   0x10, 0x38, 0, 0, // T
   /* 00010000
@@ -160,4 +155,4 @@ const uint8_t blocks[BLOCK_KINDNUM][4][BLOCK_HEIGHT] = {
 /*---- Cpp ----*/
 
 #endif
-#endif //ASTRA_CORE_SRC_ASTRA_ASTRA_ROCKET_H_
+#endif // APP_TETRIS_H_

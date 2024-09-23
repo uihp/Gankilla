@@ -143,14 +143,6 @@ void TRoutine4Tetris()
   }
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  if (htim == &htim2)
-  {
-    TRoutine4Tetris();
-  }
-}
-
 void showField(unsigned char *dat)
 {
   int8_t i, j;
@@ -161,6 +153,7 @@ void showField(unsigned char *dat)
       if (row & 0x01 << j)
 	  HAL::drawBox(i*8+1, j*8+1, 6, 6);
   }
+  HAL::drawFrame(0, 0, 128, 64);
 }
 
 int main4Tetris()

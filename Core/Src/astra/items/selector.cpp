@@ -104,7 +104,7 @@ void Selector::render(std::vector<float> _camera) {
     //draw text.
     //文字不受摄像机的影响
     HAL::setDrawType(1);
-    HAL::drawChinese((systemConfig.screenWeight -
+    HAL::drawUTF8((systemConfig.screenWeight -
                       (float) HAL::getFontWidth(menu->childMenu[menu->selectIndex]->title)) / 2.0,
                      yText + astraConfig.tileTitleHeight,
                      menu->childMenu[menu->selectIndex]->title);

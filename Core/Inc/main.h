@@ -39,6 +39,8 @@ extern "C" {
 extern ADC_HandleTypeDef hadc1;
 extern SPI_HandleTypeDef hspi2;
 extern TIM_HandleTypeDef htim2;
+extern SPI_HandleTypeDef hspi1;
+extern UART_HandleTypeDef huart1;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -59,14 +61,18 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define KEY1_Pin GPIO_PIN_4
-#define KEY1_GPIO_Port GPIOA
-#define KEY2_Pin GPIO_PIN_6
+#define KEY3_Pin GPIO_PIN_3
+#define KEY3_GPIO_Port GPIOA
+#define KEY2_Pin GPIO_PIN_7
 #define KEY2_GPIO_Port GPIOA
-#define KEY3_Pin GPIO_PIN_0
-#define KEY3_GPIO_Port GPIOB
-#define KEY4_Pin GPIO_PIN_10
+#define KEY1_Pin GPIO_PIN_0
+#define KEY1_GPIO_Port GPIOB
+#define KEY4_Pin GPIO_PIN_1
 #define KEY4_GPIO_Port GPIOB
+#define OLED_SCL_Pin GPIO_PIN_10
+#define OLED_SCL_GPIO_Port GPIOB
+#define OLED_SDA_Pin GPIO_PIN_11
+#define OLED_SDA_GPIO_Port GPIOB
 #define OLED_SCK_Pin GPIO_PIN_13
 #define OLED_SCK_GPIO_Port GPIOB
 #define OLED_MOSI_Pin GPIO_PIN_15
@@ -77,6 +83,14 @@ void Error_Handler(void);
 #define OLED_DC_GPIO_Port GPIOA
 #define OLED_RST_Pin GPIO_PIN_11
 #define OLED_RST_GPIO_Port GPIOA
+#define W25QXX_CS_Pin GPIO_PIN_12
+#define W25QXX_CS_GPIO_Port GPIOA
+#define W25Q64_SCK_Pin GPIO_PIN_3
+#define W25Q64_SCK_GPIO_Port GPIOB
+#define W25Q64_MISO_Pin GPIO_PIN_4
+#define W25Q64_MISO_GPIO_Port GPIOB
+#define W25Q64_MOSI_Pin GPIO_PIN_5
+#define W25Q64_MOSI_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

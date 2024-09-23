@@ -95,7 +95,7 @@ void PopUp::renderIndicator(float _x, float _y, const std::vector<float> &_camer
   Item::updateConfig();
   HAL::setDrawType(1);
   //把左下角转换为左上角 居中
-  HAL::drawEnglish(_x + _camera[0] + 1, _y + _camera[1] + astraConfig.listTextHeight, std::to_string(value));
+  HAL::drawASCII(_x + _camera[0] + 1, _y + _camera[1] + astraConfig.listTextHeight, std::to_string(value));
 }
 
 void PopUp::render(const std::vector<float> &_camera) {

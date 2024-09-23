@@ -1,7 +1,7 @@
 #pragma once
-#ifndef ASTRA_CORE_SRC_HAL_HAL_DREAMCORE_HAL_DREAMCORE_H_
-#define ASTRA_CORE_SRC_HAL_HAL_DREAMCORE_HAL_DREAMCORE_H_
-#include "../hal/base.h"
+#ifndef HAL_COMPONENTS_H_
+#define HAL_COMPONENTS_H_
+#include "base.h"
 #include "../lib/u8g2/u8g2.h"
 
 class MixinHAL : public HAL {
@@ -15,11 +15,7 @@ public:
 protected:
   u8g2_t canvasBuffer {};
   static unsigned char _u8x8_byte_hw_spi_callback(u8x8_t* _u8x8, unsigned char _msg, unsigned char _argInt, void* _argPtr);
-
-  static unsigned char _u8x8_gpio_and_delay_callback(U8X8_UNUSED u8x8_t* _u8x8,
-                                               U8X8_UNUSED unsigned char _msg,
-                                               U8X8_UNUSED unsigned char _argInt,
-                                               U8X8_UNUSED void* _argPtr);
+  static unsigned char _u8x8_gpio_and_delay_callback(U8X8_UNUSED u8x8_t* _u8x8, U8X8_UNUSED unsigned char _msg, U8X8_UNUSED unsigned char _argInt, U8X8_UNUSED void* _argPtr);
 
 public:
   inline void init() override {
@@ -49,8 +45,8 @@ public:
   unsigned char _getFontHeight() override;
   void _setDrawType(unsigned char _type) override;
   void _drawPixel(float _x, float _y) override;
-  void _drawEnglish(float _x, float _y, const std::string& _text) override;
-  void _drawChinese(float _x, float _y, const std::string& _text) override;
+  void _drawASCII(float _x, float _y, const std::string& _text) override;
+  void _drawUTF8(float _x, float _y, const std::string& _text) override;
   void _drawVDottedLine(float _x, float _y, float _h) override;
   void _drawHDottedLine(float _x, float _y, float _l) override;
   void _drawVLine(float _x, float _y, float _h) override;
@@ -71,4 +67,4 @@ public:
   bool _getKey(key::KEY_INDEX _keyIndex) override;
 };
 
-#endif //ASTRA_CORE_SRC_HAL_HAL_DREAMCORE_HAL_DREAMCORE_H_
+#endif // HAL_COMPONENTS_H_

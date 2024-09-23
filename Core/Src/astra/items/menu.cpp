@@ -168,7 +168,7 @@ void List::render(const std::vector<float> &_camera) {
       }
     }
     //绘制文字
-    HAL::drawChinese(_iter->position.x + _camera[0],
+    HAL::drawUTF8(_iter->position.x + _camera[0],
                      _iter->position.y + astraConfig.listTextHeight +
                      astraConfig.listTextMargin + _camera[1],
                      _iter->title);
