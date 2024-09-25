@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdarg.h"
 #include "app/astra.h"
 /* USER CODE END Includes */
 
@@ -467,7 +468,17 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void print(char* format, ...)
+{
+  uint8_t i;
+  char chars[256];
+  va_list args;
+  va_start(args, format);
+  vsprintf(chars, format, args);
+  va_end(args);
+  for (i=0;chars[i]!='\0';i++) {};
+  HAL_UART_Transmit(&huart1, (uint8_t *) chars, i, HAL_MAX_DELAY);
+}
 /* USER CODE END 4 */
 
 /**

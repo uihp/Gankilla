@@ -2,6 +2,19 @@
 #ifndef HAL_BASE_H_
 #define HAL_BASE_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*---- C ----*/
+
+/*---- C ----*/
+
+#ifdef __cplusplus
+}
+
+/*---- Cpp ----*/
+
 #include <string>
 #include <utility>
 #include <array>
@@ -161,4 +174,7 @@ public:
   virtual void _updateConfig() {}
 };
 
+/*---- Cpp ----*/
+
+#endif
 #endif // HAL_BASE_H_

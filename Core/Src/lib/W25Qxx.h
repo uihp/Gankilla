@@ -1,5 +1,5 @@
-#ifndef __W25Qxx_H
-#define __W25Qxx_H
+#ifndef LIB_W25QXX_H_
+#define LIB_W25QXX_H_
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx.h"
@@ -89,4 +89,4 @@ uint8_t BSP_W25Qx_Write(uint8_t* pData, uint32_t WriteAddr, uint32_t Size);
 uint8_t BSP_W25Qx_Erase_Block(uint32_t Address);
 uint8_t BSP_W25Qx_Erase_Chip(void);
 
-#endif
+#endif // LIB_W25QXX_H_

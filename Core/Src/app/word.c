@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "word.h"
+#include "../hal/base.h"
 #include "../lib/W25Qxx.h"
 #include "../lib/OLED.h"
 
@@ -16,13 +17,12 @@ uint8_t KEY1_Down = 0, KEY2_Down = 0, KEY3_Down = 0, KEY4_Down = 0, KEY5_Down = 
 // 0 对比度 1 年 2 月 3 日 4 词书 5 每日复习数量 6 从第一天至今天数 7 每日新词数量 8 9学习总数 10 11新学总数
 uint8_t config_data[32] = {0};
 
-
 uint8_t months[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 uint8_t condition = 0;
 // extern char word[][15];
 // extern char trans[][256];
-uint16_t index1[]={};
-uint16_t index2[]={};
+uint16_t index1[] = {};
+uint16_t index2[] = {};
 // 定义菜单结构体
 typedef struct Menu {
     char* text; // 当前菜单名称
@@ -40,7 +40,7 @@ struct menuManager{
 void testDebug(void){
   char v[32]={0};
   sprintf(v,"stream %d %d %d %d %d",KEY1_State,KEY2_State,KEY3_State,KEY4_State,KEY5_State);
-  //print1(v);
+  print1(v);
 }
 
 void contrast_setting(void){
@@ -55,6 +55,10 @@ void contrast_setting(void){
     if(config_data[0]<0xFF)config_data[0]+=10;
   }
   OLED_DrawFilledRectangle(1,30,(config_data[0]-0x10)*126/(0xFF-0x10),4, OLED_COLOR_NORMAL);
+  if(ori_config!=config_data[0]){
+    OLED_SendCmd(0x81);
+    OLED_SendCmd(config_data[0]);
+  }
   OLED_ShowFrame();
 }
 
@@ -145,8 +149,8 @@ void day_setting(void){
     }
   }
   OLED_DrawFilledRectangle(RecX,RecY,RecW,RecH, OLED_COLOR_NORMAL);
-  sprintf(buf, "20%0*dY%0*dM%0*dD", 2,config_data[1], 2,config_data[2], 2,config_data[3]);
-  OLED_PrintString(8, 23, buf, OLED_COLOR_NORMAL);
+  sprintf(buf, "20%0*d年%0*d月%0*d日", 2,config_data[1], 2,config_data[2], 2,config_data[3]);
+  OLED_PrintString(8, 23, buf, 'B', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
 }
 
@@ -154,15 +158,15 @@ void keyTest(void){
   char buf[32]={0};
   OLED_NewFrame();
   sprintf(buf, "KEY1:%d cnt:%d", KEY1_State, KEY1_Count);
-  OLED_PrintASCIIString(0, 0, buf, OLED_COLOR_NORMAL);
+  OLED_PrintASCIIString(0, 0, buf, &afont8x6, OLED_COLOR_NORMAL);
   sprintf(buf, "KEY2:%d cnt:%d", KEY2_State, KEY2_Count);
-  OLED_PrintASCIIString(0, 12, buf, OLED_COLOR_NORMAL);
+  OLED_PrintASCIIString(0, 12, buf, &afont8x6, OLED_COLOR_NORMAL);
   sprintf(buf, "KEY3:%d cnt:%d", KEY3_State, KEY3_Count);
-  OLED_PrintASCIIString(0, 24, buf, OLED_COLOR_NORMAL);
+  OLED_PrintASCIIString(0, 24, buf, &afont8x6, OLED_COLOR_NORMAL);
   sprintf(buf, "KEY4:%d cnt:%d", KEY4_State, KEY4_Count);
-  OLED_PrintASCIIString(0, 36, buf, OLED_COLOR_NORMAL);
+  OLED_PrintASCIIString(0, 36, buf, &afont8x6, OLED_COLOR_NORMAL);
   sprintf(buf, "KEY5:%d cnt:%d", KEY5_State, KEY5_Count);
-  OLED_PrintASCIIString(0, 48, buf, OLED_COLOR_NORMAL);
+  OLED_PrintASCIIString(0, 48, buf, &afont8x6, OLED_COLOR_NORMAL);
   OLED_ShowFrame();
 }
 
@@ -180,10 +184,10 @@ void drawWord(uint16_t index){
   
 	OLED_NewFrame();
   BSP_W25Qx_Read(buff,(20480+index)<<8,256);
-  OLED_PrintString(0, -word_wheel+16, buff, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, -word_wheel+16, buff, 'A', OLED_COLOR_NORMAL);
   OLED_DrawFilledRectangle(0, 0, 128, 16, OLED_COLOR_REVERSED);
   BSP_W25Qx_Read(buff,(12288+index)<<8,256);
-  OLED_PrintString(0, 0, buff, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 0, buff, 'B', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   if(KEY3_State==1){
     if(word_wheel-2>=0)word_wheel-=2;
@@ -275,7 +279,7 @@ void findWord(char *word, uint16_t index){
   //判断word里有没有“?”
   for(int i=0;i<strlen(word);i++){
     if(word[i]=='?'){
-      OLED_PrintString(0, 16, "Error spelling", OLED_COLOR_NORMAL);
+      OLED_PrintString(0, 16, "单词输入有误", 'A', OLED_COLOR_NORMAL);
       OLED_ShowFrame();
       return;
     }
@@ -320,13 +324,13 @@ void findWord(char *word, uint16_t index){
   }
   while(1){
     OLED_NewFrame();
-    OLED_PrintString(0, 16, "No record", OLED_COLOR_NORMAL);
+    OLED_PrintString(0, 16, "单词未收录或拼写有误", 'A', OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     if(KEY4_State==1){
       return;
     }
   }
-  // OLED_PrintString(0, 16, word, OLED_COLOR_NORMAL);
+  // OLED_PrintString(0, 16, word, 'A', OLED_COLOR_NORMAL);
   // OLED_ShowFrame();
 }
 
@@ -406,7 +410,7 @@ void funcionSearch(void){
   }
 
 
-  OLED_PrintString(0, 0, word3, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 0, word3, 'A', OLED_COLOR_NORMAL);
 
 
   if(KEY5_Down==1){
@@ -415,18 +419,18 @@ void funcionSearch(void){
   for(int i=0;i<5;i++){
     char buf[20];
     sprintf(buf, "%c:%s", letter[i+wheel%2*15], morse[i+wheel%2*15]);
-    OLED_PrintASCIIString(0, 16+i*9, buf, OLED_COLOR_NORMAL);
+    OLED_PrintASCIIString(0, 16+i*9, buf, &afont8x6, OLED_COLOR_NORMAL);
   }
   for(int i=0;i<5;i++){
     char buf[20];
     sprintf(buf, "%c:%s", letter[i+5+wheel%2*15], morse[i+5+wheel%2*15]);
-    OLED_PrintASCIIString(42, 16+i*9, buf, OLED_COLOR_NORMAL);
+    OLED_PrintASCIIString(42, 16+i*9, buf, &afont8x6, OLED_COLOR_NORMAL);
   }
   for(int i=0;i<5;i++){
     if(i+10+wheel%2*15>=26)break;
     char buf[20];
     sprintf(buf, "%c:%s", letter[i+10+wheel%2*15], morse[i+10+wheel%2*15]);
-    OLED_PrintASCIIString(84, 16+i*9, buf, OLED_COLOR_NORMAL);
+    OLED_PrintASCIIString(84, 16+i*9, buf, &afont8x6, OLED_COLOR_NORMAL);
   }
 
   if(KEY1_Down==1){
@@ -446,7 +450,7 @@ void funcionSearch(void){
     }
   }
 
-  //OLED_PrintString(0, 0, word, OLED_COLOR_NORMAL);
+  //OLED_PrintString(0, 0, word, 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
 }
 
@@ -495,9 +499,9 @@ void funcionStudyStart(void){
     condition=6;
   }
   if(l_index==0){
-      char buff[128]="Congratulations!";
+      char buff[128]="今日单词记忆完成!";
       OLED_NewFrame();
-      OLED_PrintString(0, 16, buff, OLED_COLOR_NORMAL);
+      OLED_PrintString(0, 16, buff, 'A', OLED_COLOR_NORMAL);
       OLED_ShowFrame();
       HAL_Delay(1000);
       KEY4_Down=1;
@@ -507,7 +511,7 @@ void funcionStudyStart(void){
     unsigned char buff[256]={0};
     OLED_NewFrame();
     BSP_W25Qx_Read(buff,(12288+(study_words[1]<<8)+study_words[0])<<8,256);
-    OLED_PrintString(0, 0, buff, OLED_COLOR_NORMAL);
+    OLED_PrintString(0, 0, buff, 'B', OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     if(KEY1_Down==1 || KEY2_Down==1){
       condition=7;
@@ -640,23 +644,23 @@ void funcionStudyStart(void){
 
 void funcionStudyNewDay(void){
   if(config_data[4]==0xFF){
-    char buff[128]="Didn't select yet";
+    char buff[128]="你还未选择词书";
     OLED_NewFrame();
-    OLED_PrintString(0, 16, buff, OLED_COLOR_NORMAL);
+    OLED_PrintString(0, 16, buff, 'A', OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     return;
   }
   if(config_data[5]==0xFF){
-    char buff[128]="Didn't select yet";
+    char buff[128]="你还未选择每日复习数量";
     OLED_NewFrame();
-    OLED_PrintString(0, 16, buff, OLED_COLOR_NORMAL);
+    OLED_PrintString(0, 16, buff, 'A', OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     return;
   }
   if(config_data[7]==0xFF){
-    char buff[128]="Didn't select yet";
+    char buff[128]="你还未选择每日新学数量";
     OLED_NewFrame();
-    OLED_PrintString(0, 16, buff, OLED_COLOR_NORMAL);
+    OLED_PrintString(0, 16, buff, 'A', OLED_COLOR_NORMAL);
     OLED_ShowFrame();
     return;
   }
@@ -743,10 +747,10 @@ void funcionStudyNewDay(void){
   BSP_W25Qx_Write((uint8_t *)words_index,(32496<<8),config_data[5]*2);
   BSP_W25Qx_Write((uint8_t *)new_words,(32496<<8)+256,new_words_num*2);
   char buff1[128];
-  sprintf(buff1,"Learned %d words,Reviewed %d words",new_words_num,review_words_num);
+  sprintf(buff1,"新学%d个单词,复习%d个单词",new_words_num,review_words_num);
 
   OLED_NewFrame();
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, buff1, 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   HAL_Delay(1000);
   KEY4_Down=1;
@@ -755,7 +759,7 @@ void funcionStudyNewDay(void){
 
 void funcionClearData(void){
   OLED_NewFrame();
-  OLED_PrintString(0, 16, "Clearing", OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, "数据清除中", 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   uint32_t cnt=26488;
   for(int i=0;i<32;i++){
@@ -768,7 +772,7 @@ void funcionClearData(void){
     cnt++;
   }
   OLED_NewFrame();
-  OLED_PrintString(0, 16, "Clear Finished", OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, "数据清除完成", 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   HAL_Delay(1000);
   condition=2;
@@ -777,7 +781,7 @@ void funcionClearData(void){
 
 void funcionStudyData(void){
   OLED_NewFrame();
-  OLED_PrintString(0, 0, "Statistics", OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 0, "学习统计", 'B', OLED_COLOR_NORMAL);
   char buff1[50]={0};
   if(config_data[11]==0xFF && config_data[10]==0xFF){
     config_data[11]=0;
@@ -790,21 +794,21 @@ void funcionStudyData(void){
   if(config_data[6]==0xFF){
     config_data[6]=0;
   }
-  sprintf(buff1, "Learned Total:%d", config_data[11]+(config_data[10]<<8));
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
-  sprintf(buff1, "Review Total:%d", config_data[9]+(config_data[8]<<8));
-  OLED_PrintString(0, 16+15, buff1, OLED_COLOR_NORMAL);
-  sprintf(buff1, "Total Days:%d", config_data[6]);
-  OLED_PrintString(0, 16+15*2, buff1, OLED_COLOR_NORMAL);
+  sprintf(buff1, "学习单词总数:%d", config_data[11]+(config_data[10]<<8));
+  OLED_PrintString(0, 16, buff1, 'A', OLED_COLOR_NORMAL);
+  sprintf(buff1, "复习单词总数:%d", config_data[9]+(config_data[8]<<8));
+  OLED_PrintString(0, 16+15, buff1, 'A', OLED_COLOR_NORMAL);
+  sprintf(buff1, "学习总天数:%d", config_data[6]);
+  OLED_PrintString(0, 16+15*2, buff1, 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
 }
 
 
 void funcionStudySettingSelectCore(void){
   config_data[4]=1;
-  char buff1[128]="Switch Successfully";
+  char buff1[128]="词书切换成功";
   OLED_NewFrame();
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, buff1, 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   HAL_Delay(1000);
   KEY4_Down=1;
@@ -813,9 +817,9 @@ void funcionStudySettingSelectCore(void){
 
 void funcionStudySettingSelectHighFrequency(void){
   config_data[4]=2;
-  char buff1[128]="Switch Successfully";
+  char buff1[128]="词书切换成功";
   OLED_NewFrame();
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, buff1, 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   HAL_Delay(1000);
   KEY4_Down=1;
@@ -824,9 +828,9 @@ void funcionStudySettingSelectHighFrequency(void){
 
 void funcionStudySettingSelectAllWord(void){
   config_data[4]=3;
-  char buff1[128]="Switch Successfully";
+  char buff1[128]="词书切换成功";
   OLED_NewFrame();
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, buff1, 'A', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
   HAL_Delay(1000);
   KEY4_Down=1;
@@ -843,10 +847,10 @@ void funcionStudySettingWordNumReview(void){
     if(config_data[5]-10>=10)config_data[5]-=10;
   }
   OLED_NewFrame();
-  OLED_PrintString(0, 0, "Review Num", OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 0, "复习单词数", 'B', OLED_COLOR_NORMAL);
   char buff1[10]={0};
   sprintf(buff1, "%d", config_data[5]);
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, buff1, 'B', OLED_COLOR_NORMAL);
   OLED_ShowFrame();
 }
 
@@ -860,54 +864,51 @@ void funcionStudySettingWordNumNew(void){
     if(config_data[7]-10>=10)config_data[7]-=10;
   }
   OLED_NewFrame();
-  OLED_PrintString(0, 0, "New Num", OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 0, "新学单词数", 'B', OLED_COLOR_NORMAL);
   char buff1[10]={0};
   sprintf(buff1, "%d", config_data[7]);
-  OLED_PrintString(0, 16, buff1, OLED_COLOR_NORMAL);
+  OLED_PrintString(0, 16, buff1, 'B', OLED_COLOR_NORMAL);
   OLED_ShowFrame();  
 }
 
-
-
-
-Menu mainMenu = {"Main Menu", &mainMenu, NULL, 0, NULL};
-Menu recite = {"Recite", &mainMenu, NULL, 0, NULL};
-Menu study_start = {"Start", &recite, NULL, 0, funcionStudyStart};
-Menu study_newDay = {"Next Day", &recite, NULL, 0, funcionStudyNewDay};
-Menu study_data = {"Statistics", &recite, NULL, 0, funcionStudyData};
-Menu study_setting = {"Setting", &recite, NULL, 0, NULL};
-Menu study_setting_select = {"Select Book", &study_setting, NULL, 0, NULL};
-Menu study_setting_select_core = {"Core 750", &study_setting_select, NULL, 0, funcionStudySettingSelectCore};
-Menu study_setting_select_highFrequency = {"Freq 1800", &study_setting_select, NULL, 0, funcionStudySettingSelectHighFrequency};
-Menu study_setting_select_allWord = {"All 6000", &study_setting_select, NULL, 0, funcionStudySettingSelectAllWord};
-Menu study_setting_wordNum = {"Daily Num", &study_setting, NULL, 0, NULL};
-Menu study_setting_ClearData = {"Clear Saves", &study_setting, NULL, 0, funcionClearData};
-Menu study_setting_wordNum_review = {"Review Num", &study_setting_wordNum, NULL, 0, funcionStudySettingWordNumReview};
-Menu study_setting_wordNum_new = {"New Num", &study_setting_wordNum, NULL, 0, funcionStudySettingWordNumNew};
-Menu dictionary = {"Books", &mainMenu, NULL, 0, NULL};
-Menu core = {"Core 750", &dictionary, NULL, 0, funcionCore};
-Menu highFrequency= {"Freq 1800", &dictionary, NULL, 0, funcionHighFrequency};
-Menu allWord = {"All 6000", &dictionary, NULL, 0, funcionAllWord};
-Menu search = {"Word Search", &dictionary, NULL, 0, funcionSearch};
-Menu testMenu = {"Test Menu", &mainMenu, NULL, 0, NULL};
-Menu test_key = {"Key Test", &testMenu, NULL, 0, keyTest};
-Menu test_menu = {"MLvMenu Test", &testMenu, NULL, 0, NULL};
-Menu test_debug = {"Debug", &testMenu, NULL, 0, testDebug};
-Menu test_menu_1 = {"M1", &test_menu, NULL, 0, NULL};
-Menu test_menu_2 = {"M2", &test_menu, NULL, 0, NULL};
-Menu test_menu_3 = {"M3", &test_menu, NULL, 0, NULL};
-Menu test_menu_4 = {"M4", &test_menu, NULL, 0, NULL};
-Menu test_menu_5 = {"M5", &test_menu, NULL, 0, NULL};
-Menu test_menu_6 = {"M6", &test_menu, NULL, 0, NULL};
-Menu test_menu_7 = {"M7", &test_menu, NULL, 0, NULL};
-Menu test_menu_8 = {"M8", &test_menu, NULL, 0, NULL};
-Menu test_menu_1_1 = {"M1-1", &test_menu_1, NULL, 0, NULL};
-Menu test_menu_1_2 = {"M1-2", &test_menu_1, NULL, 0, NULL};
-Menu test_menu_1_1_1 = {"M1-1-1", &test_menu_1_1, NULL, 0, NULL};
-Menu test_menu_1_1_2 = {"M1-1-2", &test_menu_1_1, NULL, 0, NULL};
-Menu settingMenu = {"Setting", &mainMenu, NULL, 0, NULL};
-Menu setting_contrast = {"Brightness", &settingMenu, NULL, 0, contrast_setting};
-Menu setting_day = {"Date", &settingMenu, NULL, 0, day_setting};
+Menu mainMenu = {"主菜单", &mainMenu, NULL, 0, NULL};
+Menu recite = {"背词", &mainMenu, NULL, 0, NULL};
+Menu study_start = {"开始学习", &recite, NULL, 0, funcionStudyStart};
+Menu study_newDay = {"下一天", &recite, NULL, 0, funcionStudyNewDay};
+Menu study_data = {"学习统计", &recite, NULL, 0, funcionStudyData};
+Menu study_setting = {"学习设置", &recite, NULL, 0, NULL};
+Menu study_setting_select = {"选择词书", &study_setting, NULL, 0, NULL};
+Menu study_setting_select_core = {"核心单词750", &study_setting_select, NULL, 0, funcionStudySettingSelectCore};
+Menu study_setting_select_highFrequency = {"高频单词1800", &study_setting_select, NULL, 0, funcionStudySettingSelectHighFrequency};
+Menu study_setting_select_allWord = {"全部单词6000", &study_setting_select, NULL, 0, funcionStudySettingSelectAllWord};
+Menu study_setting_wordNum = {"每日单词数", &study_setting, NULL, 0, NULL};
+Menu study_setting_ClearData = {"清空学习数据", &study_setting, NULL, 0, funcionClearData};
+Menu study_setting_wordNum_review = {"复习数量", &study_setting_wordNum, NULL, 0, funcionStudySettingWordNumReview};
+Menu study_setting_wordNum_new = {"新学数量", &study_setting_wordNum, NULL, 0, funcionStudySettingWordNumNew};
+Menu dictionary = {"词书", &mainMenu, NULL, 0, NULL};
+Menu core = {"核心单词750", &dictionary, NULL, 0, funcionCore};
+Menu highFrequency= {"高频单词1800", &dictionary, NULL, 0, funcionHighFrequency};
+Menu allWord = {"全部单词6000", &dictionary, NULL, 0, funcionAllWord};
+Menu search = {"单词查找", &dictionary, NULL, 0, funcionSearch};
+Menu testMenu = {"测试菜单", &mainMenu, NULL, 0, NULL};
+Menu test_key = {"按键测试", &testMenu, NULL, 0, keyTest};
+Menu test_menu = {"多级菜单测试", &testMenu, NULL, 0, NULL};
+Menu test_debug = {"debug测试", &testMenu, NULL, 0, testDebug};
+Menu test_menu_1 = {"多级菜单1", &test_menu, NULL, 0, NULL};
+Menu test_menu_2 = {"多级菜单2", &test_menu, NULL, 0, NULL};
+Menu test_menu_3 = {"多级菜单3", &test_menu, NULL, 0, NULL};
+Menu test_menu_4 = {"多级菜单4", &test_menu, NULL, 0, NULL};
+Menu test_menu_5 = {"多级菜单5", &test_menu, NULL, 0, NULL};
+Menu test_menu_6 = {"多级菜单6", &test_menu, NULL, 0, NULL};
+Menu test_menu_7 = {"多级菜单7", &test_menu, NULL, 0, NULL};
+Menu test_menu_8 = {"多级菜单8", &test_menu, NULL, 0, NULL};
+Menu test_menu_1_1 = {"多级菜单1-1", &test_menu_1, NULL, 0, NULL};
+Menu test_menu_1_2 = {"多级菜单1-2", &test_menu_1, NULL, 0, NULL};
+Menu test_menu_1_1_1 = {"多级菜单1-1-1", &test_menu_1_1, NULL, 0, NULL};
+Menu test_menu_1_1_2 = {"多级菜单1-1-2", &test_menu_1_1, NULL, 0, NULL};
+Menu settingMenu = {"设置", &mainMenu, NULL, 0, NULL};
+Menu setting_contrast = {"亮度调节", &settingMenu, NULL, 0, contrast_setting};
+Menu setting_day = {"日期设置", &settingMenu, NULL, 0, day_setting};
 
 /* USER CODE END 0 */
 
@@ -920,6 +921,9 @@ int main4Word(void)
   BSP_W25Qx_Init();
   BSP_W25Qx_Read(config_data,8192<<8,32);
   HAL_TIM_Base_Start_IT(&htim2);
+  OLED_Init();
+  OLED_SendCmd(0x81);
+  OLED_SendCmd(config_data[0]);
   if(config_data[1]==0xFF)config_data[1]=24;
   if(config_data[2]==0xFF)config_data[2]=8;
   if(config_data[3]==0xFF)config_data[3]=22;
@@ -1143,6 +1147,7 @@ int main4Word(void)
   float sensitivity = 0.5;
 	while (1)
 	{
+    print("update");
     // sprintf(buf, "%d", cnt1);
     // print1(buf);
     // continue;
@@ -1201,7 +1206,7 @@ int main4Word(void)
 
   // char buff[20]="拷贝完成";
   // OLED_NewFrame();
-  // OLED_PrintString(0, 16, buff, OLED_COLOR_NORMAL);
+  // OLED_PrintString(0, 16, buff, 'A', OLED_COLOR_NORMAL);
   // OLED_ShowFrame();
   // HAL_Delay(1000);
     KEY5_LastState = KEY5_State;
@@ -1222,25 +1227,25 @@ int main4Word(void)
     else{
       OLED_NewFrame();
       if(manager.current->sonCount==0){
-        OLED_PrintString(0, 16, "Empty", OLED_COLOR_NORMAL);
+        OLED_PrintString(0, 16, "没有下级菜单,要么是因为我没做,要么是卡bug了,试试返回重进", 'A', OLED_COLOR_NORMAL);
       }
       else{
         for(uint16_t i=0;i<manager.current->sonCount;i++){
           if(i==manager.index){
-            OLED_PrintString(0, i*14+16-wheel, manager.current->sonMenus[i]->text, OLED_COLOR_REVERSED);
+            OLED_PrintString(0, i*14+16-wheel, manager.current->sonMenus[i]->text, 'A', OLED_COLOR_REVERSED);
           }
           else{
-            OLED_PrintString(0, i*14+16-wheel, manager.current->sonMenus[i]->text, OLED_COLOR_NORMAL);
+            OLED_PrintString(0, i*14+16-wheel, manager.current->sonMenus[i]->text, 'A', OLED_COLOR_NORMAL);
           }
         }
       }
       OLED_DrawFilledRectangle(0, 0, 128, 16, OLED_COLOR_REVERSED);
       if(manager.current==&mainMenu){
         char buf[20];
-        sprintf(buf,"M:%d D:%d",config_data[2],config_data[3]);
-        OLED_PrintString(0,0,buf,OLED_COLOR_NORMAL);
+        sprintf(buf,"%d月%d日",config_data[2],config_data[3]);
+        OLED_PrintString(0,0,buf,'B',OLED_COLOR_NORMAL);
       }
-      else OLED_PrintString(0, 0, manager.current->text, OLED_COLOR_NORMAL);
+      else OLED_PrintString(0, 0, manager.current->text, 'B', OLED_COLOR_NORMAL);
       OLED_ShowFrame();
     }
     // drawWord(index1[1]);

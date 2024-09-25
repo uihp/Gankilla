@@ -71,9 +71,9 @@ struct config {
   float logoCopyRightHeight = 8; //logo文字高度
   unsigned char logoStarNum = 16; //logo星星数量
 
-  const unsigned char *logoTitleFont = u8g2_font_Cascadia;
-  const unsigned char *logoCopyRightFont = u8g2_font_myfont;
-  const unsigned char *mainFont = u8g2_font_myfont;
+  const unsigned char *logoTitleFont = u8g2_font_6x12_tr;
+  const unsigned char *logoCopyRightFont = u8g2_font_6x12_tr;
+  const unsigned char *mainFont = u8g2_font_6x12_tr;
 
   //如果未使用u8g2库 请自行修改这里
   //const unsigned char *logoTitleFont = u8g2_font_Cascadia;

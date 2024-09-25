@@ -136,7 +136,6 @@ void MixinHAL::_u8g2_init() {
   u8g2_ClearBuffer(&canvasBuffer);
   u8g2_SetFontMode(&canvasBuffer, 1);
   u8g2_SetFontDirection(&canvasBuffer, 0);
-  u8g2_SetFont(&canvasBuffer, u8g2_font_myfont);
 }
 
 void *MixinHAL::_getCanvasBuffer() { return u8g2_GetBufferPtr(&canvasBuffer); }

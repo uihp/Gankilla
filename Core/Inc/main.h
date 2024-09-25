@@ -41,6 +41,7 @@ extern SPI_HandleTypeDef hspi2;
 extern TIM_HandleTypeDef htim2;
 extern SPI_HandleTypeDef hspi1;
 extern UART_HandleTypeDef huart1;
+extern I2C_HandleTypeDef hi2c2;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -57,7 +58,7 @@ extern UART_HandleTypeDef huart1;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void print(char* format, ...);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
