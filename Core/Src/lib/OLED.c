@@ -745,14 +745,14 @@ void OLED_PrintString(uint8_t x, uint8_t y, char *str, char font, OLED_ColorMode
     w=12;
     le=28;
     ol=0;
-    or=3520;
+    or=2945;
   }
   else if (font=='B'){
     h=15;
     w=15;
     le=34;
     ol=4096;
-    or=8190;
+    or=4355;
   }
   uint8_t oneLen = (((h + 7) / 8) * w) + 4; // 一个字模占多少字节
   uint8_t found;                                        // 是否找到字模
